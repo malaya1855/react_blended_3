@@ -1,19 +1,40 @@
-import { Section, Container, CountryInfo} from 'components';
+import { Section, Container, CountryInfo, Loader} from 'components';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { fetchCountry } from 'service/country-service';
 
 export const Country = () => {
-const [country, setCountry]=useState(null)
+const [isLoading, setIsLoading] = useState(false);
+const [countryInfo, setCountryInfo]=useState(null)
+
+const location = useLocation();
+const goBackLink = location?.state?.from || '/';
   const {countryId}=useParams()
 useEffect(()=>{
-  fetchCountry(countryId).then(setCountry)
+  setIsLoading(true);
+  fetchCountry(countryId)
+    .then(data => setCountryInfo(data))
+    .finally(setIsLoading(false));
+  // fetchCountry(countryId).then(setCountry)
 },[countryId])
-if(!country)return;
+if(!countryInfo)return;
   return (
     <Section>
       <Container>
-        <CountryInfo {...country}/>
+      <div
+          style={{
+            marginBottom: '60px',
+            color: '#f2f2f2',
+            letterSpacing: '0.06em',
+            textDecoration: 'underline',
+
+            borderColor: 'gray',
+          }}
+        >
+          <Link to={goBackLink}>Back to Countries</Link>
+        </div>
+        <CountryInfo {...countryInfo} />
+        {isLoading && <Loader />}
       </Container>
     </Section>
   );
