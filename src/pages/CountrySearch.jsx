@@ -2,9 +2,7 @@ import {
   Container,
   SearchForm,
   Section,
-  Heading,
-  Loader,
-  CountryList,
+ CountryList,
 } from 'components';
 import { useEffect,useState } from 'react';
 import { useSearchParams, } from 'react-router-dom';
