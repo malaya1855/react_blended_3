@@ -13,7 +13,7 @@ export const getCountries = async () => {
 export const fetchCountry = async name => {
   const { data } = await axios.get(`/name/${name}`);
   const country = transformCountryData(data);
-
+console.log (country[0]) 
   return country[0];
 };
 
